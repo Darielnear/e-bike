@@ -1,0 +1,55 @@
+# Replit Task – Conversion Node.js → JSON + PHP pour Cicli Volante
+
+## Instructions Générales
+
+1. **Objectif principal** :  
+   Convertir le site actuel Node.js/React vers un système **100% front-end + JSON + PHP**, en gardant **tout le front-end intact** (React, design, images). Aucun changement sur les images, elles sont déjà dans `/public/img` nommées de `1.jpg` à `75.jpg`.
+
+2. **Données produits** :  
+   - Lire la table SQL existante qui contient **exactement 75 produits**.  
+   - Créer un fichier `src/data/products.json` avec tous les produits, incluant les champs :  
+     ```text
+     id, nome_modello, brand, categoria, prezzo, descrizione_breve
+     ```
+   - Les IDs doivent **strictement aller de 1 à 75**, correspondant aux images déjà présentes.  
+   - Tout produit doit être correctement classé par catégorie : E-MTB, E-City, MTB, Accessori, etc.
+
+3. **Frontend** :  
+   - Modifier le hook `use-products.ts` pour qu’il lise directement le fichier JSON au lieu de l’API `/api/products`.  
+   - Aucun autre changement visuel ou structurel. Les pages, composants et images restent inchangés.  
+
+4. **Backend minimal** :  
+   - Créer un fichier `send_order.php` dans `/public` qui gère :  
+     - La récupération du panier.  
+     - L’affichage des informations de paiement :  
+       ```
+       IBAN : IT52 PO35 7601 6010 1000 8072 943
+       BIC : BBVAITM2XXX
+       Bank : BBVA
+       ```
+     - L’envoi automatique d’un **mail de confirmation** au client et au mail pro (SMTP à configurer plus tard).  
+     - Le mail doit être en **italien**, avec un message clair de confirmation et le résumé de la commande.  
+   - Pour l’instant, le champ SMTP reste vide. La structure du mail doit être prête pour test visuel.  
+
+5. **Fonctionnalité additionnelle** :  
+   - Ajouter dans le **footer** l’icône d’un service de livraison rapide en Italie (juste l’icône, pas de lien externe).  
+   - Intégrer un **chat fictif** pour support rapide, sans API. Simple fenêtre avec message automatique de bienvenue.  
+
+6. **Dossier final `dist`** :  
+   - Générer le build complet React + PHP (`dist` ou équivalent) prêt à être copié dans `public_html`.  
+   - Tester **toutes les pages et catégories** avant de déclarer le travail terminé. Les produits doivent s’afficher correctement dans toutes les catégories.  
+   - Vérifier que le clic sur “commander” affiche **les infos de paiement** et le mail de confirmation (prévisualisation possible même sans SMTP).  
+
+7. **Langue** :  
+   - Tout le **texte client** et mails doit être en **italien**.  
+   - Les instructions pour Replit peuvent rester en français.  
+
+## Exigences de test avant livraison
+
+- Vérifier que **tous les produits** s’affichent dans les bonnes catégories.  
+- Vérifier que **clic sur commander** affiche correctement l’IBAN et les infos de paiement.  
+- Vérifier que le **mail de confirmation** est bien prêt, en italien.  
+- Vérifier que le **chat fictif** s’affiche correctement.  
+- Vérifier que **`dist`** contient tout pour un simple copier-coller sur cPanel.  
+
+> Important : ne pas déclarer le projet terminé tant que toutes les fonctionnalités ci-dessus ne sont pas testées et fonctionnelles.

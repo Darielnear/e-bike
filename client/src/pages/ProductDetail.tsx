@@ -1,0 +1,183 @@
+import { useProduct } from "@/hooks/use-products";
+import { useRoute } from "wouter";
+import { useCart } from "@/hooks/use-cart";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2, Minus, Plus, ShoppingBag, Truck, ShieldCheck, Zap } from "lucide-react";
+import { useState } from "react";
+import { formatCurrency } from "@/lib/utils";
+import { motion } from "framer-motion";
+
+export default function ProductDetail() {
+  const [match, params] = useRoute("/prodotto/:slug");
+  const { data: product, isLoading } = useProduct(params?.slug || "");
+  const { addItem } = useCart();
+  const { toast } = useToast();
+  const [quantity, setQuantity] = useState(1);
+  const [activeImage, setActiveImage] = useState(0);
+
+  if (isLoading) return (
+    <div className="h-screen flex items-center justify-center">
+      <Loader2 className="w-8 h-8 animate-spin text-primary" />
+    </div>
+  );
+
+  if (!product) return (
+    <div className="h-screen flex items-center justify-center">Prodotto non trovato</div>
+  );
+
+  const images = [product.main_image, ...(product.gallery_images || [])];
+
+  const handleAddToCart = () => {
+    const cartProduct = {
+      id: product.id,
+      name: product.nome_modello,
+      price: product.prezzo,
+      mainImage: product.main_image,
+      category: product.categoria,
+      shortDescription: product.descrizione_breve
+    };
+    addItem(cartProduct as any, quantity);
+    toast({
+      title: "Aggiunto al carrello",
+      description: `${quantity}x ${product.nome_modello} aggiunto con successo.`,
+    });
+  };
+
+  return (
+    <div className="container-padding max-w-7xl mx-auto py-12 md:py-24">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+        
+        {/* Gallery */}
+        <div className="space-y-4">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="aspect-[4/3] w-full bg-secondary/30 rounded-2xl overflow-hidden relative"
+          >
+            <img 
+              src={images[activeImage]} 
+              alt={product.nome_modello}
+              className="w-full h-full object-cover object-center"
+            />
+          </motion.div>
+          <div className="grid grid-cols-4 gap-4">
+            {images.map((img, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveImage(idx)}
+                className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-primary' : 'border-transparent opacity-70 hover:opacity-100'}`}
+              >
+                <img src={img} alt="" className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Info */}
+        <div className="flex flex-col justify-center">
+          <div className="mb-2">
+            <span className="text-sm font-bold tracking-widest text-primary uppercase">{product.categoria}</span>
+          </div>
+          <h1 className="font-display text-4xl md:text-5xl font-bold mb-6 text-foreground">{product.nome_modello}</h1>
+          
+          <div className="text-3xl font-bold text-foreground mb-4 flex items-center gap-4">
+            {formatCurrency(Number(product.prezzo))}
+            {product.original_price && (
+              <span className="text-xl text-muted-foreground line-through font-normal">
+                {formatCurrency(Number(product.original_price))}
+              </span>
+            )}
+          </div>
+
+          <div className="bg-secondary/20 p-4 rounded-lg mb-8 border-l-4 border-primary">
+            <p className="text-sm font-medium text-foreground leading-relaxed italic">
+              "{product.descrizione_breve}"
+            </p>
+          </div>
+
+          {/* Specs Grid */}
+          {product.categoria !== 'Accessori & Sicurezza' && (
+            <div className="grid grid-cols-3 gap-4 mb-10 border-y border-border py-8">
+              <div className="text-center">
+                <span className="block text-2xl font-bold text-foreground mb-1">{product.autonomy || 60}km</span>
+                <span className="text-xs uppercase tracking-widest text-muted-foreground">Autonomia</span>
+              </div>
+              <div className="text-center border-l border-border px-4">
+                <span className="block text-2xl font-bold text-foreground mb-1">{product.batteria_wh || 500}Wh</span>
+                <span className="text-xs uppercase tracking-widest text-muted-foreground">Batteria</span>
+              </div>
+              <div className="text-center border-l border-border">
+                <span className="block text-xl font-bold text-foreground mb-1 truncate px-1">{product.motor || "250W"}</span>
+                <span className="text-xs uppercase tracking-widest text-muted-foreground">Motore</span>
+              </div>
+            </div>
+          )}
+
+          {/* Detailed Description */}
+          {product.descrizione_dettagliata && (
+            <div className="mb-10 p-6 bg-secondary/10 rounded-2xl border border-border">
+              <h3 className="text-sm font-bold uppercase tracking-widest mb-4">Specifiche Tecniche</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                {product.descrizione_dettagliata}
+              </p>
+            </div>
+          )}
+
+          {/* Add to Cart Actions */}
+          <div className="sticky bottom-6 z-20 mt-12 lg:relative lg:bottom-0 lg:mt-0">
+            <div className="bg-white/80 backdrop-blur-md p-4 rounded-2xl shadow-2xl border border-border lg:bg-transparent lg:p-0 lg:shadow-none lg:border-0 lg:backdrop-blur-none">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex items-center border border-border bg-white rounded-xl h-14 w-full sm:w-32 px-4 shadow-sm">
+                  <button 
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="p-2 hover:text-primary transition-colors"
+                  >
+                    <Minus className="w-4 h-4" />
+                  </button>
+                  <span className="flex-1 text-center font-bold">{quantity}</span>
+                  <button 
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="p-2 hover:text-primary transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+                <button 
+                  onClick={handleAddToCart}
+                  className="flex-1 btn-primary h-14 flex items-center justify-center gap-2 text-base shadow-lg hover:shadow-primary/20 transition-all active:scale-[0.98]"
+                >
+                  <ShoppingBag className="w-5 h-5" /> Acquista Ora — {formatCurrency(Number(product.prezzo) * quantity)}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12 pt-12 border-t border-border">
+            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+              <ShieldCheck className="w-5 h-5 text-primary" /> Descrizione Completa
+            </h3>
+            <div className="prose prose-slate max-w-none text-muted-foreground leading-relaxed">
+              <p className="whitespace-pre-line">{product.descrizione_dettagliata}</p>
+            </div>
+          </div>
+
+          {/* Trust points */}
+          <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+            <div className="flex items-center gap-3">
+              <Truck className="w-5 h-5 text-foreground" />
+              <span>Spedizione gratuita in 24/48h</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <ShieldCheck className="w-5 h-5 text-foreground" />
+              <span>Garanzia ufficiale 2 anni</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Zap className="w-5 h-5 text-foreground" />
+              <span>Batteria Long-Range inclusa</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
