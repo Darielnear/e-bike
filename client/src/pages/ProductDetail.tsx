@@ -16,11 +16,13 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     if (product) {
       setActiveImage(0);
       setSelectedColor(null);
+      setImageError(false);
     }
   }, [product]);
 
@@ -34,7 +36,10 @@ export default function ProductDetail() {
     <div className="h-screen flex items-center justify-center">Prodotto non trovato</div>
   );
 
-  const currentImage = selectedColor 
+  // Determine the extension of the main image
+  // The products.json seems to use .jpg, but some files are .webp or .png
+  // We'll use the ID to find the base image
+  const currentImage = (selectedColor && !imageError)
     ? `/img/${product.id}_${selectedColor}.jpg` 
     : `/img/${product.id}.jpg`;
 
@@ -72,7 +77,14 @@ export default function ProductDetail() {
               alt={product.nome}
               className="w-full h-full object-cover object-center"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = `/img/${product.id}.jpg`;
+                const img = e.target as HTMLImageElement;
+                if (selectedColor && !imageError) {
+                  setImageError(true);
+                } else if (img.src.endsWith('.jpg')) {
+                  img.src = img.src.replace('.jpg', '.webp');
+                } else if (img.src.endsWith('.webp')) {
+                  img.src = img.src.replace('.webp', '.png');
+                }
               }}
             />
           </motion.div>
@@ -88,7 +100,12 @@ export default function ProductDetail() {
                   alt="" 
                   className="w-full h-full object-cover" 
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = `/img/${product.id}.jpg`;
+                    const target = e.target as HTMLImageElement;
+                    if (target.src.endsWith('.jpg')) {
+                      target.src = target.src.replace('.jpg', '.webp');
+                    } else if (target.src.endsWith('.webp')) {
+                      target.src = target.src.replace('.webp', '.png');
+                    }
                   }}
                 />
               </button>
@@ -117,7 +134,10 @@ export default function ProductDetail() {
             productId={product.id}
             variants={product.varianti || []}
             selectedColor={selectedColor}
-            onColorSelect={setSelectedColor}
+            onColorSelect={(color) => {
+              setSelectedColor(color);
+              setImageError(false);
+            }}
             size="md"
           />
 
