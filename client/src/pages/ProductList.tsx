@@ -40,11 +40,30 @@ export default function ProductList({ params }: { params: { category?: string } 
     { name: "Accessori & Sicurezza", icon: Wrench }
   ];
 
+  const categoryMap: Record<string, string> = {
+    "e-mtb": "E-MTB",
+    "mtb": "E-MTB",
+    "e-city": "E-City & Urban",
+    "e-city & urban": "E-City & Urban",
+    "urban": "E-City & Urban",
+    "trekking": "Trekking & Gravel",
+    "trekking & gravel": "Trekking & Gravel",
+    "gravel": "Trekking & Gravel",
+    "accessori": "Accessori & Sicurezza",
+    "accessori & sicurezza": "Accessori & Sicurezza",
+    "accessori-sicurezza": "Accessori & Sicurezza",
+    "accessories": "Accessori & Sicurezza"
+  };
+
   const filteredProducts = products?.filter(product => {
+    const productCatRaw = (product.categoria || "").toLowerCase().trim();
+    const productCatNormalized = categoryMap[productCatRaw] || "E-MTB"; // Fallback to E-MTB if unknown but prioritize E-MTB as it's the main cat
+
     if (selectedCategory) {
       const normalizedSelected = selectedCategory.toLowerCase().trim();
-      const normalizedProduct = (product.categoria || "").toLowerCase().trim();
-      if (normalizedProduct !== normalizedSelected) return false;
+      const mappedSelected = categoryMap[normalizedSelected] || selectedCategory;
+      
+      if (productCatNormalized !== mappedSelected) return false;
     }
     if (search && !(product.nome_modello || "").toLowerCase().includes(search.toLowerCase())) return false;
     return true;

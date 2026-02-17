@@ -101,7 +101,7 @@ export function generate75Products(): InsertProduct[] {
         autonomy: isAccessory ? 0 : 90 + (i % 30),
         motor: isAccessory ? "N/A" : cat.motor,
         batteriaWh: isAccessory ? 0 : cat.battery,
-        mainImage: `/img/${i}.jpg`, // Correct relative path for static serving
+        mainImage: isAccessory ? `https://images.unsplash.com/photo-1557434440-45326477399a?q=80&w=800` : `/img/${i}.jpg`,
         colorVariants: variantMap[i] || [],
         stockQuantity: 12,
         isBestseller: i % 8 === 0,

@@ -56,19 +56,40 @@ export async function registerRoutes(
   // Products
   app.get(api.products.list.path, async (req, res) => {
     const productsList = await storage.getProducts(req.query as any);
-    const mappedProducts = productsList.map(p => ({
-      ...p,
-      nome_modello: p.name,
-      categoria: p.category,
-      prezzo: Number(p.price),
-      descrizione_breve: p.shortDescription,
-      descrizione_dettagliata: p.descriptionDettagliata,
-      main_image: p.mainImage,
-      gallery_images: p.galleryImages,
-      color_variants: p.colorVariants,
-      original_price: p.originalPrice,
-      batteria_wh: p.batteriaWh
-    }));
+    
+    const categoryMap: Record<string, string> = {
+      "e-mtb": "E-MTB",
+      "mtb": "E-MTB",
+      "e-city": "E-City & Urban",
+      "e-city & urban": "E-City & Urban",
+      "urban": "E-City & Urban",
+      "trekking": "Trekking & Gravel",
+      "trekking & gravel": "Trekking & Gravel",
+      "gravel": "Trekking & Gravel",
+      "accessori": "Accessori & Sicurezza",
+      "accessori & sicurezza": "Accessori & Sicurezza",
+      "accessori-sicurezza": "Accessori & Sicurezza",
+      "accessories": "Accessori & Sicurezza"
+    };
+
+    const mappedProducts = productsList.map(p => {
+      const rawCat = (p.category || "").toLowerCase().trim();
+      const normalizedCat = categoryMap[rawCat] || p.category || "E-MTB";
+      
+      return {
+        ...p,
+        nome_modello: p.name,
+        categoria: normalizedCat,
+        prezzo: Number(p.price),
+        descrizione_breve: p.shortDescription,
+        descrizione_dettagliata: p.descriptionDettagliata,
+        main_image: p.mainImage,
+        gallery_images: p.galleryImages,
+        color_variants: p.colorVariants,
+        original_price: p.originalPrice,
+        batteria_wh: p.batteriaWh
+      };
+    });
     res.json(mappedProducts);
   });
 
