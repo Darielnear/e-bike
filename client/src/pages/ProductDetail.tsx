@@ -36,23 +36,23 @@ export default function ProductDetail() {
 
   const currentImage = selectedColor 
     ? `/img/${product.id}_${selectedColor}.jpg` 
-    : (product.main_image || product.mainImage);
+    : `/img/${product.id}.jpg`;
 
-  const images = [currentImage, ...(product.gallery_images || product.galleryImages || [])];
+  const images = [currentImage];
 
   const handleAddToCart = () => {
     const cartProduct = {
       id: product.id,
-      name: product.nome_modello,
+      name: product.nome,
       price: product.prezzo,
       mainImage: currentImage,
       category: product.categoria,
-      shortDescription: product.descrizione_breve
+      shortDescription: product.descrizione
     };
     addItem(cartProduct as any, quantity);
     toast({
       title: "Aggiunto al carrello",
-      description: `${quantity}x ${product.nome_modello} aggiunto con successo.`,
+      description: `${quantity}x ${product.nome} aggiunto con successo.`,
     });
   };
 
@@ -68,11 +68,11 @@ export default function ProductDetail() {
             className="aspect-[4/3] w-full bg-secondary/30 rounded-2xl overflow-hidden relative"
           >
             <img 
-              src={images[activeImage] || product.main_image || ""} 
-              alt={product.nome_modello}
+              src={images[activeImage]} 
+              alt={product.nome}
               className="w-full h-full object-cover object-center"
               onError={(e) => {
-                (e.target as HTMLImageElement).src = product.main_image || "";
+                (e.target as HTMLImageElement).src = `/img/${product.id}.jpg`;
               }}
             />
           </motion.div>
@@ -84,11 +84,11 @@ export default function ProductDetail() {
                 className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${activeImage === idx ? 'border-primary' : 'border-transparent opacity-70 hover:opacity-100'}`}
               >
                 <img 
-                  src={img || product.main_image || ""} 
+                  src={img} 
                   alt="" 
                   className="w-full h-full object-cover" 
                   onError={(e) => {
-                    (e.target as HTMLImageElement).src = product.main_image || "";
+                    (e.target as HTMLImageElement).src = `/img/${product.id}.jpg`;
                   }}
                 />
               </button>
@@ -101,26 +101,21 @@ export default function ProductDetail() {
           <div className="mb-2">
             <span className="text-sm font-bold tracking-widest text-primary uppercase">{product.categoria}</span>
           </div>
-          <h1 className="font-display text-4xl md:text-5xl font-bold mb-6 text-foreground">{product.nome_modello}</h1>
+          <h1 className="font-display text-4xl md:text-5xl font-bold mb-6 text-foreground">{product.nome}</h1>
           
           <div className="text-3xl font-bold text-foreground mb-4 flex items-center gap-4">
-            {formatCurrency(Number(product.prezzo || product.price))}
-            {(product.original_price || product.originalPrice) && (
-              <span className="text-xl text-muted-foreground line-through font-normal">
-                {formatCurrency(Number(product.original_price || product.originalPrice))}
-              </span>
-            )}
+            {formatCurrency(product.prezzo)}
           </div>
 
           <div className="bg-secondary/20 p-4 rounded-lg mb-8 border-l-4 border-primary">
             <p className="text-sm font-medium text-foreground leading-relaxed italic">
-              "{product.descrizione_breve}"
+              "{product.descrizione}"
             </p>
           </div>
 
           <ColorSelector 
             productId={product.id}
-            variants={product.color_variants || []}
+            variants={product.varianti || []}
             selectedColor={selectedColor}
             onColorSelect={setSelectedColor}
             size="md"
@@ -130,29 +125,27 @@ export default function ProductDetail() {
           {product.categoria !== 'Accessori & Sicurezza' && (
             <div className="grid grid-cols-3 gap-4 mb-10 border-y border-border py-8">
               <div className="text-center">
-                <span className="block text-2xl font-bold text-foreground mb-1">{product.autonomy || 60}km</span>
+                <span className="block text-2xl font-bold text-foreground mb-1">60km</span>
                 <span className="text-xs uppercase tracking-widest text-muted-foreground">Autonomia</span>
               </div>
               <div className="text-center border-l border-border px-4">
-                <span className="block text-2xl font-bold text-foreground mb-1">{product.batteria_wh || 500}Wh</span>
+                <span className="block text-2xl font-bold text-foreground mb-1">500Wh</span>
                 <span className="text-xs uppercase tracking-widest text-muted-foreground">Batteria</span>
               </div>
               <div className="text-center border-l border-border">
-                <span className="block text-xl font-bold text-foreground mb-1 truncate px-1">{product.motor || "250W"}</span>
+                <span className="block text-xl font-bold text-foreground mb-1 truncate px-1">250W</span>
                 <span className="text-xs uppercase tracking-widest text-muted-foreground">Motore</span>
               </div>
             </div>
           )}
 
           {/* Detailed Description */}
-          {product.descrizione_dettagliata && (
-            <div className="mb-10 p-6 bg-secondary/10 rounded-2xl border border-border">
-              <h3 className="text-sm font-bold uppercase tracking-widest mb-4">Specifiche Tecniche</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-                {product.descrizione_dettagliata}
-              </p>
-            </div>
-          )}
+          <div className="mb-10 p-6 bg-secondary/10 rounded-2xl border border-border">
+            <h3 className="text-sm font-bold uppercase tracking-widest mb-4">Specifiche Tecniche</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+              {product.descrizione}
+            </p>
+          </div>
 
           {/* Add to Cart Actions */}
           <div className="sticky bottom-6 z-20 mt-12 lg:relative lg:bottom-0 lg:mt-0">
@@ -177,7 +170,7 @@ export default function ProductDetail() {
                   onClick={handleAddToCart}
                   className="flex-1 btn-primary h-14 flex items-center justify-center gap-2 text-base shadow-lg hover:shadow-primary/20 transition-all active:scale-[0.98]"
                 >
-                  <ShoppingBag className="w-5 h-5" /> Acquista Ora — {formatCurrency(Number(product.prezzo) * quantity)}
+                  <ShoppingBag className="w-5 h-5" /> Acquista Ora — {formatCurrency(product.prezzo * quantity)}
                 </button>
               </div>
             </div>
@@ -188,7 +181,7 @@ export default function ProductDetail() {
               <ShieldCheck className="w-5 h-5 text-primary" /> Descrizione Completa
             </h3>
             <div className="prose prose-slate max-w-none text-muted-foreground leading-relaxed">
-              <p className="whitespace-pre-line">{product.descrizione_dettagliata}</p>
+              <p className="whitespace-pre-line">{product.descrizione}</p>
             </div>
           </div>
 

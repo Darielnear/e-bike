@@ -2,7 +2,7 @@
   {"id":1,"nome":"Specialized Levo Gen 3 Alloy","categoria":"E-MTB","prezzo":5500,"descrizione":"Potenza e agilità in alluminio. Il punto di riferimento per ogni trail.","varianti":["grigio","rosso"]},
   {"id":2,"nome":"Specialized Turbo Kenevo SL","categoria":"E-MTB","prezzo":7200,"descrizione":"Leggerezza estrema e feeling naturale. Una enduro nata per scendere.","varianti":["grigio","verde"]},
   {"id":3,"nome":"Specialized Rockhopper","categoria":"MTB","prezzo":950,"descrizione":"Versatilità e robustezza per le prime avventure off-road.","varianti":["blu","nero","rosso"]},
-  {"id":4,"nome":"Orbea Wild FS","categoria":"E-MTB","prezzo":8400,"descrizione":"Geometria racing e puissance pura per dominare i sentieri tecnici.","varianti":["arancione"]},
+  {"id":4,"nome":"Orbea Wild FS","categoria":"E-MTB","prezzo":8400,"descrizione":"Geometria racing e potenza pura per dominare i sentieri tecnici.","varianti":["arancione"]},
   {"id":5,"nome":"Orbea Rise M20","categoria":"E-MTB","prezzo":6900,"descrizione":"Filosofia Less is more. Una E-MTB leggera e reattiva.","varianti":["blu"]},
   {"id":6,"nome":"Fantic XTF 1.5 630Wh","categoria":"E-MTB","prezzo":4800,"descrizione":"Design italiano e grande autonomia per lunghe giornate in montagna.","varianti":["verde"]},
   {"id":7,"nome":"Fantic XTF 1.5 Sport","categoria":"E-MTB","prezzo":5200,"descrizione":"Reattività e controllo superiore per prestazioni sportive.","varianti":["bianco"]},
@@ -32,7 +32,7 @@
   {"id":31,"nome":"VanMoof S5","categoria":"E-City","prezzo":3300,"descrizione":"Tecnologia invisibile e sicurezza integrata.","varianti":["grigio"]},
   {"id":32,"nome":"Rad Power RadCity 5","categoria":"E-City","prezzo":1900,"descrizione":"Versatilità imbattibile per ogni pendenza urbana.","varianti":["bianco"]},
   {"id":33,"nome":"Tern GSD S10","categoria":"Cargo","prezzo":5600,"descrizione":"Capacità di carico estrema in un formato compatto.","varianti":["blu"]},
-  {"id":34,"nome":"Veloretti Electric Ace","categoria":"E-City","prezzo":2900,"descrizione":"Stile rétro e technologie moderne sulle strade di città.","varianti":["nero"]},
+  {"id":34,"nome":"Veloretti Electric Ace","categoria":"E-City","prezzo":2900,"descrizione":"Stile rétro e tecnologia moderna sulle strade di città.","varianti":["nero"]},
   {"id":35,"nome":"Honbike U4","categoria":"E-City","prezzo":1700,"descrizione":"Design aeronautico senza catena. Manutenzione zero.","varianti":["nero"]},
   {"id":36,"nome":"Trek Allant+ 8 Stagger","categoria":"E-City","prezzo":4600,"descrizione":"Potenza Bosch e design raffinato per sostituire l'auto.","varianti":["nero"]},
   {"id":37,"nome":"Cube Kathmandu Hybrid","categoria":"Trekking","prezzo":3900,"descrizione":"Robusta e affidabile per il cicloturismo d'avventura.","varianti":["verde"]},
@@ -46,6 +46,6 @@
   {"id":45,"nome":"Aventon Aventure.2","categoria":"E-Fat Bike","prezzo":2000,"descrizione":"Potenza selvaggia per non fermarsi mai.","varianti":["blu"]},
   {"id":46,"nome":"Himiway Zebra D5 ST","categoria":"E-Fat Bike","prezzo":2200,"descrizione":"Autonomia record e design robusto per ogni percorso.","varianti":["verde"]},
   {"id":47,"nome":"Lectric XP 3.0","categoria":"E-Folding","prezzo":1300,"descrizione":"Potenza e portabilità au meilleur prix.","varianti":["bianco"]},
-  {"id":48,"nome":"Juiced CrossCurrent X","categoria":"E-City","prezzo":2500,"descrizione":"Velocité e autonomia per chi vuole arrivare primo.","varianti":["bianco"]},
+  {"id":48,"nome":"Juiced CrossCurrent X","categoria":"E-City","prezzo":2500,"descrizione":"Velocità e autonomia per chi vuole arrivare primo.","varianti":["bianco"]},
   {"id":50,"nome":"Specialized Turbo Tero X","categoria":"SUV","prezzo":5200,"descrizione":"Sospensioni totali e anima esploratrice per ogni terreno.","varianti":["nero"]}
 ]

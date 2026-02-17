@@ -20,22 +20,22 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const currentImage = selectedColor 
     ? `/img/${product.id}_${selectedColor}.jpg` 
-    : (product.main_image || product.mainImage);
+    : `/img/${product.id}.jpg`;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent navigation
     const cartProduct = {
       id: product.id,
-      name: product.nome_modello,
+      name: product.nome,
       price: product.prezzo,
       mainImage: currentImage,
       category: product.categoria,
-      shortDescription: product.descrizione_breve
+      shortDescription: product.descrizione
     };
     addItem(cartProduct as any);
     toast({
       title: "Aggiunto al carrello",
-      description: `${product.nome_modello} è stato aggiunto.`,
+      description: `${product.nome} è stato aggiunto.`,
       duration: 3000,
     });
   };
@@ -49,11 +49,11 @@ export function ProductCard({ product }: ProductCardProps) {
     >
       <Link href={`/prodotto/${product.id}`} className="block relative aspect-[4/3] overflow-hidden bg-white flex items-center justify-center p-4">
         <img 
-          src={currentImage || product.main_image || ""} 
-          alt={product.nome_modello}
+          src={currentImage} 
+          alt={product.nome}
           className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = product.main_image || "";
+            (e.target as HTMLImageElement).src = `/img/${product.id}.jpg`;
           }}
         />
         
@@ -75,12 +75,12 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
         
         <Link href={`/prodotto/${product.id}`} className="block group-hover:text-primary transition-colors">
-          <h3 className="font-display text-xl font-bold mb-3 leading-tight min-h-[3rem] line-clamp-2">{product.nome_modello}</h3>
+          <h3 className="font-display text-xl font-bold mb-3 leading-tight min-h-[3rem] line-clamp-2">{product.nome}</h3>
         </Link>
         
         <div className="flex items-center gap-4 mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
           <div className="flex items-center gap-1">
-            <Zap className="w-3 h-3 text-primary" /> {product.autonomy || 60}km
+            <Zap className="w-3 h-3 text-primary" /> 60km
           </div>
           <div className="flex items-center gap-1">
             <ShieldCheck className="w-3 h-3 text-primary" /> 2 Anni
@@ -88,12 +88,12 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
         
         <p className="text-muted-foreground text-sm line-clamp-2 mb-4 min-h-[2.5rem] italic leading-relaxed">
-          "{product.descrizione_breve}"
+          "{product.descrizione}"
         </p>
 
         <ColorSelector 
           productId={product.id}
-          variants={product.color_variants || []}
+          variants={product.varianti || []}
           selectedColor={selectedColor}
           onColorSelect={setSelectedColor}
         />
@@ -101,7 +101,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-end justify-between border-t border-border pt-4 mt-4">
           <div className="flex flex-col">
             <span className="text-lg font-bold text-foreground">
-              {formatCurrency(Number(product.prezzo))}
+              {formatCurrency(product.prezzo)}
             </span>
           </div>
           

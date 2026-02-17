@@ -27,14 +27,29 @@ export function ColorSelector({
 }: ColorSelectorProps) {
   if (!variants || variants.length === 0) return null;
 
-  const allVariants = ['base', ...variants];
   const dotSize = size === 'sm' ? 'w-4 h-4' : 'w-8 h-8';
 
   return (
     <div className={cn("flex flex-wrap gap-2 mt-2", size === 'md' && "mb-4")}>
-      {allVariants.map((color) => {
-        const isBase = color === 'base';
-        const colorValue = isBase ? '#E5E7EB' : COLOR_MAP[color.toLowerCase()];
+      {/* Base point always represented as the product ID image */}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onColorSelect(null);
+        }}
+        className={cn(
+          "rounded-full border-2 transition-all hover:scale-110",
+          dotSize,
+          !selectedColor ? "border-primary ring-2 ring-primary/20" : "border-transparent"
+        )}
+        style={{ backgroundColor: '#E5E7EB' }}
+        title="Originale"
+        data-testid={`button-color-base-${productId}`}
+      />
+
+      {variants.map((color) => {
+        const colorValue = COLOR_MAP[color.toLowerCase()];
         
         return (
           <button
@@ -42,17 +57,15 @@ export function ColorSelector({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              onColorSelect(isBase ? null : color);
+              onColorSelect(color);
             }}
             className={cn(
               "rounded-full border-2 transition-all hover:scale-110",
               dotSize,
-              (selectedColor === color || (isBase && !selectedColor)) 
-                ? "border-primary ring-2 ring-primary/20" 
-                : "border-transparent"
+              selectedColor === color ? "border-primary ring-2 ring-primary/20" : "border-transparent"
             )}
             style={{ backgroundColor: colorValue }}
-            title={isBase ? "Originale" : color}
+            title={color}
             data-testid={`button-color-${color}-${productId}`}
           />
         );
