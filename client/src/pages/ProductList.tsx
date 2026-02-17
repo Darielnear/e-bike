@@ -65,7 +65,7 @@ export default function ProductList({ params }: { params: { category?: string } 
       
       if (productCatNormalized !== mappedSelected) return false;
     }
-    if (search && !(product.nome_modello || "").toLowerCase().includes(search.toLowerCase())) return false;
+    if (search && !(product.nome_modello || product.name || "").toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
