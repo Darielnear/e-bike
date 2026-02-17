@@ -17,8 +17,10 @@ export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
   const { toast } = useToast();
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [imageError, setImageError] = useState(false);
+  const [baseImageValid, setBaseImageValid] = useState(true);
 
-  const currentImage = selectedColor 
+  const currentImage = (selectedColor && !imageError)
     ? `/img/${product.id}_${selectedColor}.jpg` 
     : `/img/${product.id}.jpg`;
 
@@ -53,7 +55,21 @@ export function ProductCard({ product }: ProductCardProps) {
           alt={product.nome}
           className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
           onError={(e) => {
-            (e.target as HTMLImageElement).src = `/img/${product.id}.jpg`;
+            const img = e.target as HTMLImageElement;
+            if (selectedColor && !imageError) {
+              setImageError(true);
+            } else if (!selectedColor) {
+              if (img.src.endsWith('.jpg')) {
+                img.src = img.src.replace('.jpg', '.webp');
+              } else if (img.src.endsWith('.webp')) {
+                img.src = img.src.replace('.webp', '.png');
+              } else if (img.src.endsWith('.png')) {
+                setBaseImageValid(false);
+                if (product.varianti && product.varianti.length > 0) {
+                  setSelectedColor(product.varianti[0]);
+                }
+              }
+            }
           }}
         />
         
@@ -95,7 +111,11 @@ export function ProductCard({ product }: ProductCardProps) {
           productId={product.id}
           variants={product.varianti || []}
           selectedColor={selectedColor}
-          onColorSelect={setSelectedColor}
+          onColorSelect={(color) => {
+            setSelectedColor(color);
+            setImageError(false);
+          }}
+          showBase={baseImageValid}
         />
         
         <div className="flex items-end justify-between border-t border-border pt-4 mt-4">

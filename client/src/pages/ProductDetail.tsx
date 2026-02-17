@@ -10,19 +10,23 @@ import { ColorSelector } from "@/components/ColorSelector";
 
 export default function ProductDetail() {
   const [match, params] = useRoute("/prodotto/:slug");
-  const { data: product, isLoading } = useProduct(params?.slug || "");
+  const { product, isLoading } = useProduct(params?.slug);
   const { addItem } = useCart();
   const { toast } = useToast();
-  const [quantity, setQuantity] = useState(1);
-  const [activeImage, setActiveImage] = useState(0);
+  
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [imageError, setImageError] = useState(false);
+  const [baseImageValid, setBaseImageValid] = useState(true);
+  const [activeImage, setActiveImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     if (product) {
       setActiveImage(0);
       setSelectedColor(null);
       setImageError(false);
+      setBaseImageValid(true);
+      setQuantity(1);
     }
   }, [product]);
 
@@ -37,8 +41,6 @@ export default function ProductDetail() {
   );
 
   // Determine the extension of the main image
-  // The products.json seems to use .jpg, but some files are .webp or .png
-  // We'll use the ID to find the base image
   const currentImage = (selectedColor && !imageError)
     ? `/img/${product.id}_${selectedColor}.jpg` 
     : `/img/${product.id}.jpg`;
@@ -80,10 +82,19 @@ export default function ProductDetail() {
                 const img = e.target as HTMLImageElement;
                 if (selectedColor && !imageError) {
                   setImageError(true);
-                } else if (img.src.endsWith('.jpg')) {
-                  img.src = img.src.replace('.jpg', '.webp');
-                } else if (img.src.endsWith('.webp')) {
-                  img.src = img.src.replace('.webp', '.png');
+                } else if (!selectedColor) {
+                  // If base image fails with all extensions, mark it invalid
+                  if (img.src.endsWith('.jpg')) {
+                    img.src = img.src.replace('.jpg', '.webp');
+                  } else if (img.src.endsWith('.webp')) {
+                    img.src = img.src.replace('.webp', '.png');
+                  } else if (img.src.endsWith('.png')) {
+                    setBaseImageValid(false);
+                    // If base image is invalid, and there are variants, select the first variant
+                    if (product.varianti && product.varianti.length > 0) {
+                      setSelectedColor(product.varianti[0]);
+                    }
+                  }
                 }
               }}
             />
@@ -139,6 +150,7 @@ export default function ProductDetail() {
               setImageError(false);
             }}
             size="md"
+            showBase={baseImageValid}
           />
 
           {/* Specs Grid */}

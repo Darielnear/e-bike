@@ -16,6 +16,7 @@ interface ColorSelectorProps {
   selectedColor: string | null;
   onColorSelect: (color: string | null) => void;
   size?: 'sm' | 'md';
+  showBase?: boolean;
 }
 
 export function ColorSelector({ 
@@ -23,7 +24,8 @@ export function ColorSelector({
   variants, 
   selectedColor, 
   onColorSelect,
-  size = 'sm'
+  size = 'sm',
+  showBase = true
 }: ColorSelectorProps) {
   if (!variants || variants.length === 0) return null;
 
@@ -31,22 +33,24 @@ export function ColorSelector({
 
   return (
     <div className={cn("flex flex-wrap gap-2 mt-2", size === 'md' && "mb-4")}>
-      {/* Base point always represented as the product ID image */}
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          onColorSelect(null);
-        }}
-        className={cn(
-          "rounded-full border-2 transition-all hover:scale-110",
-          dotSize,
-          !selectedColor ? "border-primary ring-2 ring-primary/20" : "border-transparent"
-        )}
-        style={{ backgroundColor: '#E5E7EB' }}
-        title="Originale"
-        data-testid={`button-color-base-${productId}`}
-      />
+      {/* Base point represented as the product ID image */}
+      {showBase && (
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onColorSelect(null);
+          }}
+          className={cn(
+            "rounded-full border-2 transition-all hover:scale-110",
+            dotSize,
+            !selectedColor ? "border-primary ring-2 ring-primary/20" : "border-transparent"
+          )}
+          style={{ backgroundColor: '#E5E7EB' }}
+          title="Originale"
+          data-testid={`button-color-base-${productId}`}
+        />
+      )}
 
       {variants.map((color) => {
         const colorValue = COLOR_MAP[color.toLowerCase()];
