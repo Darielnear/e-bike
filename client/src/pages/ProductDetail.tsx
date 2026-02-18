@@ -14,6 +14,10 @@ export default function ProductDetail() {
   const { addItem } = useCart();
   const { toast } = useToast();
   
+  if (product) {
+    console.log("Products count (hook):", product ? 1 : 0);
+  }
+  
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [imageError, setImageError] = useState(false);
   const [baseImageValid, setBaseImageValid] = useState(true);
