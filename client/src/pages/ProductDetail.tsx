@@ -14,10 +14,6 @@ export default function ProductDetail() {
   const { addItem } = useCart();
   const { toast } = useToast();
   
-  if (product) {
-    console.log("Products count (hook):", product ? 1 : 0);
-  }
-  
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [imageError, setImageError] = useState(false);
   const [baseImageValid, setBaseImageValid] = useState(true);
@@ -143,6 +139,19 @@ export default function ProductDetail() {
             <p className="text-sm font-medium text-foreground leading-relaxed italic">
               "{product.descrizione}"
             </p>
+          </div>
+
+          {/* Technical Specs from JSON */}
+          <div className="mb-10 p-6 bg-secondary/10 rounded-2xl border border-border">
+            <h3 className="text-sm font-bold uppercase tracking-widest mb-4">Caratteristiche Tecniche</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              {Object.entries(product.caratteristiche_tecniche || {}).map(([key, value]) => (
+                <div key={key} className="flex justify-between border-b border-border/50 pb-2">
+                  <span className="text-muted-foreground capitalize">{key.replace('_', ' ')}:</span>
+                  <span className="font-medium text-foreground">{value}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           <ColorSelector 
