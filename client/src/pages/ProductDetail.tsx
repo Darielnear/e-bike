@@ -124,7 +124,7 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* Info */}
+          {/* Info */}
         <div className="flex flex-col justify-center">
           <div className="mb-2">
             <span className="text-sm font-bold tracking-widest text-primary uppercase">{product.categoria}</span>
@@ -139,19 +139,6 @@ export default function ProductDetail() {
             <p className="text-sm font-medium text-foreground leading-relaxed italic">
               "{product.descrizione}"
             </p>
-          </div>
-
-          {/* Technical Specs from JSON */}
-          <div className="mb-10 p-6 bg-secondary/10 rounded-2xl border border-border">
-            <h3 className="text-sm font-bold uppercase tracking-widest mb-4">Caratteristiche Tecniche</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              {Object.entries(product.caratteristiche_tecniche || {}).map(([key, value]) => (
-                <div key={key} className="flex justify-between border-b border-border/50 pb-2">
-                  <span className="text-muted-foreground capitalize">{key.replace('_', ' ')}:</span>
-                  <span className="font-medium text-foreground">{value}</span>
-                </div>
-              ))}
-            </div>
           </div>
 
           <ColorSelector 
@@ -183,14 +170,6 @@ export default function ProductDetail() {
               </div>
             </div>
           )}
-
-          {/* Detailed Description */}
-          <div className="mb-10 p-6 bg-secondary/10 rounded-2xl border border-border">
-            <h3 className="text-sm font-bold uppercase tracking-widest mb-4">Specifiche Tecniche</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-              {product.descrizione}
-            </p>
-          </div>
 
           {/* Add to Cart Actions */}
           <div className="sticky bottom-6 z-20 mt-12 lg:relative lg:bottom-0 lg:mt-0">
