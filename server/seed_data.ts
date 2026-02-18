@@ -90,7 +90,7 @@ export function generate75Products(): InsertProduct[] {
         slug: `${productName.toLowerCase().replace(/ /g, '-').replace('&', 'and')}-${i}`,
         category: cat.name,
         brand: isAccessory ? "Cicli Volante" : detail.name.split(' ')[0],
-        price: isAccessory ? (45 + i).toString() + ".00" : (2450 + i * 120).toString() + ".00",
+        price: isAccessory ? (25 + (i % 50)).toString() + ".90" : (1850 + i * 85).toString() + ".00",
         shortDescription: isAccessory ? "Accessorio di alta qualità per la tua sicurezza e manutenzione." : detail.desc,
         fullDescription: isAccessory 
           ? `Questo accessorio premium è stato selezionato da Cicli Volante per garantire la massima affidabilità ai nostri clienti. Realizzato con materiali resistenti e design italiano.` 

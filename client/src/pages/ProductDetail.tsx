@@ -221,17 +221,8 @@ export default function ProductDetail() {
             </div>
           </div>
 
-          <div className="mt-12 pt-12 border-t border-border">
-            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-primary" /> Descrizione Completa
-            </h3>
-            <div className="prose prose-slate max-w-none text-muted-foreground leading-relaxed">
-              <p className="whitespace-pre-line">{product.descrizione}</p>
-            </div>
-          </div>
-
           {/* Trust points */}
-          <div className="flex flex-col gap-3 text-sm text-muted-foreground">
+          <div className="mt-8 flex flex-col gap-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-3">
               <Truck className="w-5 h-5 text-foreground" />
               <span>Spedizione gratuita in 24/48h</span>

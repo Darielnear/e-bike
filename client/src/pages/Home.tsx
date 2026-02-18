@@ -192,6 +192,64 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {/* Testimonials Section */}
+      <section className="container-padding max-w-7xl mx-auto w-full mb-24">
+        <div className="flex flex-col items-center text-center mb-16">
+          <span className="text-primary font-bold uppercase tracking-widest text-xs mb-3">Recensioni</span>
+          <h2 className="text-4xl md:text-5xl font-display font-bold">Cosa Dicono di Noi</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              name: "Marco Rossi",
+              role: "Appassionato di MTB",
+              content: "La Specialized Turbo Levo Pro ha cambiato il mio modo di vivere la montagna. Servizio eccellente da parte di Cicli Volante!",
+              rating: 5
+            },
+            {
+              name: "Elena Bianchi",
+              role: "Pendolare Urbana",
+              content: "La mia nuova e-city bike è perfetta per il traffico di Milano. Consegna puntualissima e personale molto preparato.",
+              rating: 5
+            },
+            {
+              name: "Giuseppe Verdi",
+              role: "Cicloturista",
+              content: "Ho acquistato tutti gli accessori qui. Qualità impeccabile e prezzi competitivi. Consigliatissimo!",
+              rating: 4
+            }
+          ].map((testimonial, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              viewport={{ once: true }}
+              className="bg-secondary/10 p-8 rounded-2xl border border-border flex flex-col gap-4"
+            >
+              <div className="flex gap-1">
+                {[...Array(5)].map((_, star) => (
+                  <svg 
+                    key={star} 
+                    className={`w-5 h-5 ${star < testimonial.rating ? 'text-primary' : 'text-muted'}`} 
+                    fill="currentColor" 
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="text-muted-foreground italic">"{testimonial.content}"</p>
+              <div>
+                <p className="font-bold text-foreground">{testimonial.name}</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-widest">{testimonial.role}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
