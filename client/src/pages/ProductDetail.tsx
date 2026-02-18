@@ -10,7 +10,7 @@ import { ColorSelector } from "@/components/ColorSelector";
 
 export default function ProductDetail() {
   const [match, params] = useRoute("/prodotto/:slug");
-  const { product, isLoading } = useProduct(params?.slug);
+  const { data: product, isLoading } = useProduct(params?.slug || "");
   const { addItem } = useCart();
   const { toast } = useToast();
   
@@ -167,18 +167,18 @@ export default function ProductDetail() {
           />
 
           {/* Specs Grid */}
-          {product.categoria !== 'Accessori & Sicurezza' && (
+          {product.categoria !== 'Accessori & Sicurezza' && product.caratteristiche_tecniche && (
             <div className="grid grid-cols-3 gap-4 mb-10 border-y border-border py-8">
               <div className="text-center">
-                <span className="block text-2xl font-bold text-foreground mb-1">60km</span>
+                <span className="block text-2xl font-bold text-foreground mb-1">{product.caratteristiche_tecniche.autonomia || '60km'}</span>
                 <span className="text-xs uppercase tracking-widest text-muted-foreground">Autonomia</span>
               </div>
               <div className="text-center border-l border-border px-4">
-                <span className="block text-2xl font-bold text-foreground mb-1">500Wh</span>
+                <span className="block text-2xl font-bold text-foreground mb-1">{product.caratteristiche_tecniche.batteria || '500Wh'}</span>
                 <span className="text-xs uppercase tracking-widest text-muted-foreground">Batteria</span>
               </div>
               <div className="text-center border-l border-border">
-                <span className="block text-xl font-bold text-foreground mb-1 truncate px-1">250W</span>
+                <span className="block text-xl font-bold text-foreground mb-1 truncate px-1">{product.caratteristiche_tecniche.motore || '250W'}</span>
                 <span className="text-xs uppercase tracking-widest text-muted-foreground">Motore</span>
               </div>
             </div>
